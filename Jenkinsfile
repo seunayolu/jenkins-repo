@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_IP = '192.168.0.1'
+        EC2_IP = '54.236.60.125'
     }
 
     stages {
@@ -15,10 +15,15 @@ pipeline {
             }
         }
 
-        stage ('build') {
+        stage ('deploy to EC2') {
             steps {
                 script {
-                    echo "Welcome"
+                    echo "deploying shell script to EC2"
+                    def shellCmd = "bash ./webetup.sh"
+                   sshagent(['jenkins-ec2']) {
+                        sh "scp -o StrictHostKeyChecking=no websetup.sh ubuntu@$EC2_IP:/home/ubuntu"
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@$EC2_IP ${shellCmd}"
+                    }
                 }
             }
         }
