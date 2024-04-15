@@ -9,8 +9,8 @@ pipeline {
         stage ('fetch') {
             steps {
                 script {
-                    echo "Create a folder"
-                    sh "mkdir -p jenkins-class"
+                    echo "Pull Web Script from GitHub"
+                    git branch: 'jenkins', url: 'https://github.com/seunayolu/jenkins_deploy_ec2.git'
                 }
             }
         }
